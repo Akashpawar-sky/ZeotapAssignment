@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weather Dashboard</title>
+</head>
+<body>
+    <h1>Weather Dashboard</h1>
+    <h2>Current Weather for Cities</h2>
+    <table>
+    <tr>
+        <th>City</th>
+        <th>Condition</th>
+        <th>Temperature (°C)</th>
+        <th>Feels Like (°C)</th>
+        <th>Timestamp</th>
+    </tr>
+    <tr th:each="weather : ${weatherList}">
+        <td th:text="${weather.city}"></td>
+        <td th:text="${weather.mainCondition}"></td>
+        <td th:text="${weather.temperature}"></td>
+        <td th:text="${weather.feelsLike}"></td>
+        <td th:text="${weather.timestamp}"></td>
+    </tr>
+  </table>
+
+</body>
+</html>
