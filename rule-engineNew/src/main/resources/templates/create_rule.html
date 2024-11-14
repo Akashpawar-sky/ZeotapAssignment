@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Rule</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create Rule</h2>
+        <form id="create-rule-form">
+            <div class="form-group">
+                <label for="ruleString">Rule Definition:</label>
+                <textarea id="ruleString" class="form-control" rows="5" placeholder="Enter rule logic here"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary mt-3" onclick="submitRule()">Create Rule</button>
+        </form>
+        <div id="responseMessage" class="alert mt-3" style="display: none;"></div>
+    </div>
+
+    <!-- Include Bootstrap JS and other necessary JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function submitRule() {
+        const ruleString = document.getElementById('ruleString').value;
+        fetch('/api/rules/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ruleString: ruleString })  // Wrap ruleString in an object
+        })
+        .then(response => response.json())
+        .then(data => {
+            const messageBox = document.getElementById('responseMessage');
+            messageBox.style.display = 'block';
+            if (data && data.id) {  // Check if ID is present in the response
+                messageBox.classList.add('alert-success');
+                messageBox.textContent = 'Rule created successfully with ID: ' + data.id;
+            } else {
+                messageBox.classList.add('alert-danger');
+                messageBox.textContent = 'Error: Rule ID is undefined.';
+            }
+        })
+        .catch(error => {
+            const messageBox = document.getElementById('responseMessage');
+            messageBox.style.display = 'block';
+            messageBox.classList.add('alert-danger');
+            messageBox.textContent = 'Error creating rule: ' + error.message;
+        });
+    }
+
+
+        
+    </script>
+</body>
+</html>
